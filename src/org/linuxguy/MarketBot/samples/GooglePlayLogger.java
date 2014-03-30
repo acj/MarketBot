@@ -19,10 +19,9 @@ public class GooglePlayLogger {
 
         String username = args[0];
         String password = args[1];
-        String app_name = args[2];
-        String app_id = args[3];
+        String app_id   = args[2];
 
-        GooglePlayWatcher playWatcher = new GooglePlayWatcher(username, password, app_name, app_id);
+        GooglePlayWatcher playWatcher = new GooglePlayWatcher(username, password, app_id);
 
         playWatcher.addListener(new ConsoleNotifier());
 
@@ -39,6 +38,6 @@ public class GooglePlayLogger {
     }
 
     private static void printUsage() {
-        System.out.println(String.format("Usage: %s <user> <password> <app name> <app package name>", GooglePlayLogger.class.getName()));
+        System.out.println(String.format("Usage: %s <user> <password> <app package name>", GooglePlayLogger.class.getName()));
     }
 }

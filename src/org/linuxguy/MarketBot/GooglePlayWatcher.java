@@ -10,13 +10,11 @@ public class GooglePlayWatcher extends Watcher<Comment> implements MarketSession
 
     private String mUsername;
     private String mPassword;
-    private String mAppName;
     private String mAppId;
 
-    public GooglePlayWatcher(String username, String password, String appName, String appId) {
+    public GooglePlayWatcher(String username, String password, String appId) {
         mUsername = username;
         mPassword = password;
-        mAppName = appName;
         mAppId = appId;
     }
 
