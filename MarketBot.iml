@@ -18,39 +18,13 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="module-library">
-      <library name="androidmarketapi-0.6.jar">
+      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/androidmarketapi-0.6.jar!/" />
+          <root url="file://$MODULE_DIR$/libs" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="protobuf-java-2.2.0.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/protobuf-java-2.2.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="google-http-client-1.17.0-rc.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/google-http-client-1.17.0-rc.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="google-http-client-gson-1.17.0-rc.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/google-http-client-gson-1.17.0-rc.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/libs" recursive="false" />
       </library>
     </orderEntry>
   </component>
