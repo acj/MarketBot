@@ -66,7 +66,6 @@ public class AppStoreWatcher extends Watcher<Comment> {
         while (childNodes.hasNext()) {
             JsonNode n = childNodes.next();
             if (n.has("author")) {
-                System.out.println("Checking author/uri");
                 JsonNode authorNode = n.get("author");
 
                 Comment comment = new Comment();
