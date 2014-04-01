@@ -49,5 +49,7 @@ public class GooglePlayWatcher extends Watcher<Comment> implements MarketSession
                 notifyListeners(Comment.from(c));
             }
         }
+
+        mLastPollTime = System.currentTimeMillis();
     }
 }
