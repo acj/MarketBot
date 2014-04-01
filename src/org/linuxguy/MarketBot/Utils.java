@@ -13,7 +13,9 @@ import java.net.URLConnection;
 public class Utils {
 
     public static String formatComment(String appName, Comment c) throws UnsupportedEncodingException {
-        String escapedString = c.text.replace("\"", "\\\"");
+        String escapedString = c.text.replace("\"", "\\\"")
+                                     .replace("\t", "    ")
+                                     .replace("\n", "    ");
         return String.format("[%s]: \\\"%s\\\"  %s  —%s",
                 appName, escapedString, Utils.formatRatingWithStars(c.rating), c.author);
     }
