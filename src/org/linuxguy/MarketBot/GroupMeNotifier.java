@@ -36,7 +36,6 @@ public class GroupMeNotifier extends Notifier<Comment> implements ResultListener
             URL url = new URL(GROUPME_BOT_API);
             HttpsURLConnection httpcon = (HttpsURLConnection) url.openConnection();
             httpcon.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            httpcon.setRequestProperty("Accept", "*/*");
             httpcon.setRequestMethod("POST");
 
             httpcon.setDoOutput(true);
