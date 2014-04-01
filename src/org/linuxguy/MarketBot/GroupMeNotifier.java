@@ -32,9 +32,11 @@ public class GroupMeNotifier extends Notifier<Comment> implements ResultListener
     }
 
     private static boolean postCommentToGroupMe(String comment) {
+        HttpsURLConnection httpcon = null;
+
         try {
             URL url = new URL(GROUPME_BOT_API);
-            HttpsURLConnection httpcon = (HttpsURLConnection) url.openConnection();
+            httpcon = (HttpsURLConnection) url.openConnection();
             httpcon.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             httpcon.setRequestMethod("POST");
 
@@ -48,13 +50,15 @@ public class GroupMeNotifier extends Notifier<Comment> implements ResultListener
             os.flush();
             os.close();
 
-            httpcon.disconnect();
+            return httpcon.getResponseCode() == 202;
         } catch (IOException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            if ( httpcon != null ) {
+                httpcon.disconnect();
+            }
         }
-
-        return true;
     }
 
     private String getJsonPayloadForComment(Comment c) throws UnsupportedEncodingException {
