@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 public class GooglePlayWatcher extends Watcher<Comment> implements MarketSession.Callback<Market.CommentsResponse> {
     private static final long POLL_INTERVAL_MS = TimeUnit.MINUTES.toMillis(5);
+    private static final int  NONE             = -1;
 
     private String mUsername;
     private String mPassword;
@@ -45,11 +46,15 @@ public class GooglePlayWatcher extends Watcher<Comment> implements MarketSession
     @Override
     public void onResult(Market.ResponseContext responseContext, Market.CommentsResponse response) {
         for (Market.Comment c : response.getCommentsList()) {
-            if (c.getCreationTime() > mLastPollTime) {
+            if ( mLastPollTime == NONE ) {
+                mLastPollTime = c.getCreationTime();
+            } else if (c.getCreationTime() > mLastPollTime) {
                 notifyListeners(Comment.from(c));
             }
         }
 
-        mLastPollTime = System.currentTimeMillis();
+        if (response.getCommentsCount() > 0) {
+            mLastPollTime = response.getComments(0).getCreationTime();
+        }
     }
 }
