@@ -24,6 +24,10 @@ The username and password must match a valid Google account and are required to 
 
 The inputs and outputs for MarketBot are extensible and easy to use. If you develop a new one, please send me a pull request.
 
+### Acknowledgements
+
+ * [android-market-api](https://code.google.com/p/android-market-api/) library
+
 ### License
 
 Apache 2.0. Please see [LICENSE](LICENSE) for the nitty gritty.
