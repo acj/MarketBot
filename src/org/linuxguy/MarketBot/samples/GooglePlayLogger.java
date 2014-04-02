@@ -12,7 +12,7 @@ import org.linuxguy.MarketBot.Notifier;
  */
 public class GooglePlayLogger {
     public static void main(String[] args) throws InterruptedException {
-        if (args.length < 4) {
+        if (args.length < 3) {
             printUsage();
             System.exit(-1);
         }
@@ -38,6 +38,6 @@ public class GooglePlayLogger {
     }
 
     private static void printUsage() {
-        System.out.println(String.format("Usage: %s <user> <password> <app package name>", GooglePlayLogger.class.getName()));
+        System.out.println(String.format("Usage: <user> <password> <app package name>", GooglePlayLogger.class.getName()));
     }
 }
