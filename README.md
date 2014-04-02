@@ -3,6 +3,12 @@ MarketBot
 
 A library for tracking app reviews and notifying interested parties.
 
+### Demo
+
+```$ java -jar MarketBot.jar <username> <password> <package name for app>```
+
+The username and password must match a valid Google account and are required to interact with the Google Play API. They're not stored anywhere, nor are they used for any other purpose. The account does not need to be the one used to publish the app(s) that you're tracking; it can be any valid account.
+
 ### Inputs
 
  * Google Play
