@@ -37,8 +37,12 @@ public class AppStoreWatcher extends Watcher<Comment> {
                     for (Comment c : comments) {
                         if (c.timestamp > mMostRecentId) {
                             notifyListeners(c);
+
+                            if (c.timestamp > newMostRecentId) {
+                                newMostRecentId = c.timestamp;
+                            }
+
                             didNotify = true;
-                            newMostRecentId = c.timestamp;
                         }
                     }
 
