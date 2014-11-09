@@ -25,20 +25,24 @@ public class GooglePlayWatcher extends Watcher<Comment> implements MarketSession
         session.login(mUsername, mPassword);
 
         while (true) {
-            Market.CommentsRequest commentsRequest = Market.CommentsRequest.newBuilder()
+            try {
+                Market.CommentsRequest commentsRequest = Market.CommentsRequest.newBuilder()
                     .setAppId(mAppId)
                     .setStartIndex(0)
                     .setEntriesCount(5)
                     .build();
 
-            session.append(commentsRequest, this);
+                session.append(commentsRequest, this);
 
-            session.flush();
+                session.flush();
 
-            try {
-                Thread.sleep(POLL_INTERVAL_MS);
-            } catch (InterruptedException e) {
-                break;
+                try {
+                    Thread.sleep(POLL_INTERVAL_MS);
+                } catch (InterruptedException e) {
+                    break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
