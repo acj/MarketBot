@@ -29,7 +29,11 @@ public class AppStoreWatcher extends Watcher<Comment> {
 
             if (comments.size() > 0) {
                 if (mMostRecentId == NONE) {
-                    mMostRecentId = comments.get(0).timestamp;
+                    for (Comment c : comments) {
+                        if (c.timestamp > mMostRecentId) {
+                            mMostRecentId = c.timestamp;
+                        }
+                    }
                 } else {
                     boolean didNotify = false;
                     long newMostRecentId = NONE;
