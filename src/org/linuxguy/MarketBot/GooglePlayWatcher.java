@@ -45,6 +45,11 @@ public class GooglePlayWatcher extends Watcher<Comment> implements MarketSession
 
     @Override
     public void onResult(Market.ResponseContext responseContext, Market.CommentsResponse response) {
+        if (response == null || response.getCommentsCount() == 0) {
+            System.out.println("No comments in result");
+            return;
+        }
+
         for (Market.Comment c : response.getCommentsList()) {
             if ( mLastPollTime == NONE ) {
                 mLastPollTime = c.getCreationTime();
