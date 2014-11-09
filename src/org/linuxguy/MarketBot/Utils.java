@@ -16,7 +16,7 @@ public class Utils {
         String escapedString = c.text.replace("\"", "\\\"")
                                      .replace("\t", "    ")
                                      .replace("\n", "    ");
-        return String.format("[%s]: \\\"%s\\\"  %s  —%s",
+        return String.format("%s: \\\"%s\\\"  %s \u2014%s",
                 appName, escapedString, Utils.formatRatingWithStars(c.rating), c.author);
     }
 
