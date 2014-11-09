@@ -23,15 +23,15 @@ public class Utils {
     public static String formatRatingWithStars(int rating) {
         switch (rating) {
             case 1:
-                return "★";
+                return "\u2605\u2606\u2606\u2606\u2606";
             case 2:
-                return "★★";
+                return "\u2605\u2605\u2606\u2606\u2606";
             case 3:
-                return "★★★";
+                return "\u2605\u2605\u2605\u2606\u2606";
             case 4:
-                return "★★★★";
+                return "\u2605\u2605\u2605\u2605\u2606";
             case 5:
-                return "★★★★★";
+                return "\u2605\u2605\u2605\u2605\u2605";
             default:
                 return "";
         }
