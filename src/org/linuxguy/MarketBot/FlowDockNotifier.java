@@ -82,17 +82,10 @@ public class FlowDockNotifier extends Notifier<Comment> implements ResultListene
         String jsonPayload = null;
         switch (mNotificationType) {
             case CHAT:
-                jsonPayload = String.format(flowdockChatJSONFormat,
-                                            Utils.formatComment(mAppName, c),
-                                            mFlowDockName,
-                                            tags);
+                jsonPayload = String.format(flowdockChatJSONFormat, formatComment(c), mFlowDockName, tags);
                 break;
             case INBOX:
-                jsonPayload = String.format(flowdockInboxJSONFormat,
-                                            mFlowDockName,
-                                            mAppName,
-                                            Utils.formatComment(mAppName, c),
-                                            tags);
+                jsonPayload = String.format(flowdockInboxJSONFormat, mFlowDockName, mAppName, formatComment(c), tags);
                 break;
         }
 
@@ -113,5 +106,12 @@ public class FlowDockNotifier extends Notifier<Comment> implements ResultListene
         }
 
         return apiURL;
+    }
+
+    private String formatComment(Comment c) throws UnsupportedEncodingException {
+        String escapedString = c.text.replace("\"", "\\\"")
+                                     .replace("\t", "    ")
+                                     .replace("\n", "    ");
+        return String.format("\\\"%s\\\"  %s \u2014%s", escapedString, Utils.formatRatingWithStars(c.rating), c.author);
     }
 }
