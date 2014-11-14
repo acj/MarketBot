@@ -42,7 +42,7 @@ public class FlowDockNotifier extends Notifier<Comment> implements ResultListene
     }
 
     private boolean postCommentToFlowDock(String comment) {
-        final String assembledURL = String.format("%s:%s", getURLForNotificationType(mNotificationType), mAPIToken);
+        final String assembledURL = String.format("%s%s", getURLForNotificationType(mNotificationType), mAPIToken);
         HttpsURLConnection httpcon = null;
 
         try {
