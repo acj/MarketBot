@@ -7,11 +7,11 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 
-public class FlowDockNotifier extends Notifier<Comment> implements ResultListener<Comment> {
+public class FlowdockNotifier extends Notifier<Comment> implements ResultListener<Comment> {
     private static final String FLOWDOCK_CHAT_API = "https://api.flowdock.com/v1/messages/chat/";
     private static final String FLOWDOCK_INBOX_API = "https://api.flowdock.com/v1/messages/team_inbox/";
 
-    public enum FlowDockNotificationType {
+    public enum FlowdockNotificationType {
         CHAT,
         INBOX
     }
@@ -19,9 +19,9 @@ public class FlowDockNotifier extends Notifier<Comment> implements ResultListene
     private String mAppName;
     private String mFlowDockName;
     private String mAPIToken;
-    private FlowDockNotificationType mNotificationType;
+    private FlowdockNotificationType mNotificationType;
 
-    public FlowDockNotifier(String appName, String flowDockName, String apiToken, FlowDockNotificationType notificationType) {
+    public FlowdockNotifier(String appName, String flowDockName, String apiToken, FlowdockNotificationType notificationType) {
         mAppName = appName;
         mFlowDockName = flowDockName;
         mAPIToken = apiToken;
@@ -92,7 +92,7 @@ public class FlowDockNotifier extends Notifier<Comment> implements ResultListene
         return jsonPayload;
     }
 
-    private String getURLForNotificationType(FlowDockNotificationType notificationType) {
+    private String getURLForNotificationType(FlowdockNotificationType notificationType) {
         String apiURL = null;
 
         switch (notificationType) {
