@@ -73,7 +73,7 @@ public class FlowDockNotifier extends Notifier<Comment> implements ResultListene
     }
 
     private String getJsonPayloadForComment(Comment c) throws UnsupportedEncodingException {
-        final String tags = "#review";
+        final String tags = "[#review]";
         final String flowdockChatJSONFormat =
             "{\"content\" : \"%s\", \"external_user_name\" : \"%s\", \"tags\" : \"%s\" }";
         final String flowdockInboxJSONFormat =
