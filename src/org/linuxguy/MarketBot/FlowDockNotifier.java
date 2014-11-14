@@ -61,7 +61,7 @@ public class FlowDockNotifier extends Notifier<Comment> implements ResultListene
             os.flush();
             os.close();
 
-            return httpcon.getResponseCode() == 202;
+            return httpcon.getResponseCode() == 200;
         } catch (IOException e) {
             e.printStackTrace();
             return false;
