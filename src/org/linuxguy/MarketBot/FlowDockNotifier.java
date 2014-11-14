@@ -48,7 +48,7 @@ public class FlowDockNotifier extends Notifier<Comment> implements ResultListene
         try {
             URL url = new URL(assembledURL);
             httpcon = (HttpsURLConnection) url.openConnection();
-            httpcon.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            httpcon.setRequestProperty("Content-Type", "application/json");
             httpcon.setRequestMethod("POST");
 
             httpcon.setDoOutput(true);
