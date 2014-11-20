@@ -16,7 +16,8 @@ The username and password must match a valid Google account and are required to 
  
 ### Outputs
 
- * [GroupMe](http://groupme.com)
+ * [Flowdock](https://flowdock.com)
+ * [GroupMe](https://groupme.com)
  * Console/Terminal
  
  
