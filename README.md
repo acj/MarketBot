@@ -3,15 +3,12 @@ MarketBot ![Build Status](https://travis-ci.org/acj/MarketBot.svg?branch=master)
 
 A library for tracking app reviews and notifying interested parties.
 
-### Building
+### Getting Started
 
-```$ gradle build```
+1. Edit [`MarketBot.java`](src/main/java/org/linuxguy/MarketBot/MarketBot.java) to suit your apps.
+2. `$ gradle run`
 
-### Demo
-
-```$ java -jar MarketBot.jar <username> <password> <package name for app>```
-
-The username and password must match a valid Google account and are required to interact with the Google Play API. They're not stored anywhere, nor are they used for any other purpose. The account does not need to be the one used to publish the app(s) that you're tracking; it can be any valid account.
+If you are using MarketBot to track an app in Google Play, the username and password must match a valid Google account. These credentials are required to interact with the Google Play API. They're not stored anywhere, nor are they used for any other purpose. The account does *not* need to be the one used to publish the app(s) that you're tracking; it can be any valid Google account. I strongly recommend that you use a dummy account to protect your apps and personal data.
 
 ### Inputs
 
