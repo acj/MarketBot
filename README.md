@@ -1,4 +1,4 @@
-MarketBot
+MarketBot ![Build Status](https://travis-ci.org/acj/MarketBot.svg?branch=master)
 =========
 
 A library for tracking app reviews and notifying interested parties.
