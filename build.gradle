@@ -20,6 +20,16 @@ dependencies {
 }
 
 jar {
+    // Build a fat jar that includes all dependencies
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+        configurations.runtime.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+
     manifest {
         attributes 'Implementation-Title': 'MarketBot',
                    'Implementation-Version': version
