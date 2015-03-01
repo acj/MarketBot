@@ -163,8 +163,12 @@ public class AppAnnieWatcher extends Watcher<Comment> {
         c.rating = node.get("rating").asInt();
         c.author = node.get("reviewer").textValue();
         c.text = String.format("%s. %s", node.get("title").textValue(), node.get("text").textValue());
-        c.version = node.get("version").textValue();
-        c.countryCode = node.get("country").textValue();
+
+        JsonNode versionNode = node.get("version");
+        JsonNode countryNode = node.get("country");
+
+        c.version = versionNode != null ? versionNode.textValue() : "";
+        c.countryCode = countryNode != null ? countryNode.textValue() : "";
 
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
