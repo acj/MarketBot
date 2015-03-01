@@ -5,6 +5,8 @@ public class Comment {
     public int    rating;
     public String text;
     public long   timestamp;
+    public String version;
+    public String countryCode;
 
     @Override
     public boolean equals(Object that) {
