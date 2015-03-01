@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class AppStoreWatcher extends Watcher<Comment> {
+public class AppStoreRSSWatcher extends Watcher<Comment> {
     private static final String APP_STORE_URL    = "https://itunes.apple.com/%s/rss/customerreviews/id=%s/sortBy=mostRecent/json";
     private static final long   POLL_INTERVAL_MS = TimeUnit.MINUTES.toMillis(5);
     private static final int    NONE             = -1;
@@ -16,7 +16,7 @@ public class AppStoreWatcher extends Watcher<Comment> {
     private String mAppId;
     private long   mMostRecentId;
 
-    public AppStoreWatcher(String countryCode, String appId) {
+    public AppStoreRSSWatcher(String countryCode, String appId) {
         mCountryCode  = countryCode;
         mAppId        = appId;
         mMostRecentId = NONE;
@@ -76,12 +76,13 @@ public class AppStoreWatcher extends Watcher<Comment> {
             if (n.has("author")) {
                 JsonNode authorNode = n.get("author");
 
-                Comment comment = new Comment();
+                final Comment comment = new Comment();
+
+                final String title = n.get("title").get("label").textValue();
+                final String text = n.get("content").get("label").textValue();
 
                 comment.author = authorNode.get("name").get("label").textValue();
-                comment.text = n.get("title").get("label").textValue() +
-                        " ... " +
-                        n.get("content").get("label").textValue();
+                comment.text = String.format("%s. %s", title, text);
                 comment.rating = n.get("im:rating").get("label").asInt();
                 comment.timestamp = n.get("id").get("label").asLong();
 

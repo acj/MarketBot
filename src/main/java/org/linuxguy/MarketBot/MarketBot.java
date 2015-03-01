@@ -21,7 +21,7 @@ public class MarketBot {
  
         // You can find this app ID in iTunes Connect
         String iOSAppId = "123456789";
-        AppStoreWatcher appStoreWatcherUS = new AppStoreWatcher("us", iOSAppId);
+        AppStoreRSSWatcher appStoreWatcherUS = new AppStoreRSSWatcher("us", iOSAppId);
         appStoreWatcherUS.addListener(new GroupMeNotifier("My iOS App", groupmeId));
         appStoreWatcherUS.start();
 
