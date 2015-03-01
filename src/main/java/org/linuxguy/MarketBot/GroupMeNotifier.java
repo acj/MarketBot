@@ -60,7 +60,7 @@ public class GroupMeNotifier extends Notifier<Comment> implements ResultListener
                                      .replace("\t", "    ")
                                      .replace("\n", "    ");
 
-        return String.format("%s: \\\"%s\\\"  %s \u2014%s",
-                mAppName, escapedString, Utils.formatRatingWithStars(c.rating), c.author);
+        return String.format("\\\"%s\\\" \u2014%s %s\\n\\n%s v%s (%s storefront)",
+                escapedString, c.author, Utils.formatRatingWithStars(c.rating), mAppName, c.version, c.countryCode);
     }
 }
