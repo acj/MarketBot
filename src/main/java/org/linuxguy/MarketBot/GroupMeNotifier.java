@@ -1,11 +1,9 @@
 package org.linuxguy.MarketBot;
 
-import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedOutputStream;
+import com.squareup.okhttp.*;
+
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 
 public class GroupMeNotifier extends Notifier<Comment> implements ResultListener<Comment> {
     private static final String GROUPME_BOT_API = "https://api.groupme.com/v3/bots/post";
@@ -24,7 +22,7 @@ public class GroupMeNotifier extends Notifier<Comment> implements ResultListener
             String toPost = getJsonPayloadForComment(result);
 
             if (!postCommentToGroupMe(toPost)) {
-                System.err.println("Failed to post payload");
+                System.err.println(String.format("Failed to post payload: %s", toPost));
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -32,32 +30,23 @@ public class GroupMeNotifier extends Notifier<Comment> implements ResultListener
     }
 
     private static boolean postCommentToGroupMe(String comment) {
-        HttpsURLConnection httpcon = null;
+        MediaType urlEncodedMediaType = MediaType.parse("application/x-www-form-urlencoded");
 
         try {
-            URL url = new URL(GROUPME_BOT_API);
-            httpcon = (HttpsURLConnection) url.openConnection();
-            httpcon.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            httpcon.setRequestMethod("POST");
+            OkHttpClient client = new OkHttpClient();
 
-            httpcon.setDoOutput(true);
-            httpcon.connect();
+            RequestBody body = RequestBody.create(urlEncodedMediaType, comment);
+            Request request = new Request.Builder()
+                                         .url(GROUPME_BOT_API)
+                                         .post(body)
+                                         .build();
 
-            byte[] outputBytes = comment.getBytes("UTF-8");
-            OutputStream os = new BufferedOutputStream(httpcon.getOutputStream());
-            os.write(outputBytes);
-
-            os.flush();
-            os.close();
-
-            return httpcon.getResponseCode() == 202;
+            Response response = client.newCall(request).execute();
+            return response.isSuccessful();
         } catch (IOException e) {
             e.printStackTrace();
+
             return false;
-        } finally {
-            if ( httpcon != null ) {
-                httpcon.disconnect();
-            }
         }
     }
 

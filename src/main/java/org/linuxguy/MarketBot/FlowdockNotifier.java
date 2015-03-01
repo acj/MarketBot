@@ -1,11 +1,9 @@
 package org.linuxguy.MarketBot;
 
-import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedOutputStream;
+import com.squareup.okhttp.*;
+
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 
 public class FlowdockNotifier extends Notifier<Comment> implements ResultListener<Comment> {
     private static final String FLOWDOCK_CHAT_API = "https://api.flowdock.com/v1/messages/chat/";
@@ -43,32 +41,24 @@ public class FlowdockNotifier extends Notifier<Comment> implements ResultListene
 
     private boolean postCommentToFlowDock(String comment) {
         final String assembledURL = String.format("%s%s", getURLForNotificationType(mNotificationType), mAPIToken);
-        HttpsURLConnection httpcon = null;
+
+        MediaType urlEncodedMediaType = MediaType.parse("application/json");
 
         try {
-            URL url = new URL(assembledURL);
-            httpcon = (HttpsURLConnection) url.openConnection();
-            httpcon.setRequestProperty("Content-Type", "application/json");
-            httpcon.setRequestMethod("POST");
+            OkHttpClient client = new OkHttpClient();
 
-            httpcon.setDoOutput(true);
-            httpcon.connect();
+            RequestBody body = RequestBody.create(urlEncodedMediaType, comment);
+            Request request = new Request.Builder()
+                                         .url(assembledURL)
+                                         .post(body)
+                                         .build();
 
-            byte[] outputBytes = comment.getBytes("UTF-8");
-            OutputStream os = new BufferedOutputStream(httpcon.getOutputStream());
-            os.write(outputBytes);
-
-            os.flush();
-            os.close();
-
-            return httpcon.getResponseCode() == 200;
+            Response response = client.newCall(request).execute();
+            return response.isSuccessful();
         } catch (IOException e) {
             e.printStackTrace();
+
             return false;
-        } finally {
-            if ( httpcon != null ) {
-                httpcon.disconnect();
-            }
         }
     }
 
