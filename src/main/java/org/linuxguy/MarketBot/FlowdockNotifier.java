@@ -5,7 +5,7 @@ import com.squareup.okhttp.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-public class FlowdockNotifier extends Notifier<Comment> implements ResultListener<Comment> {
+public class FlowdockNotifier extends Notifier<Comment> {
     private static final String FLOWDOCK_CHAT_API = "https://api.flowdock.com/v1/messages/chat/";
     private static final String FLOWDOCK_INBOX_API = "https://api.flowdock.com/v1/messages/team_inbox/";
 
@@ -24,6 +24,7 @@ public class FlowdockNotifier extends Notifier<Comment> implements ResultListene
         mFlowDockName = flowDockName;
         mAPIToken = apiToken;
         mNotificationType = notificationType;
+        mReviewFormatter = this;
     }
 
     @Override
@@ -72,10 +73,10 @@ public class FlowdockNotifier extends Notifier<Comment> implements ResultListene
         String jsonPayload = null;
         switch (mNotificationType) {
             case CHAT:
-                jsonPayload = String.format(flowdockChatJSONFormat, formatComment(c), mFlowDockName, tags);
+                jsonPayload = String.format(flowdockChatJSONFormat, mReviewFormatter.formatReview(c), mFlowDockName, tags);
                 break;
             case INBOX:
-                jsonPayload = String.format(flowdockInboxJSONFormat, mFlowDockName, mAppName, formatComment(c), tags);
+                jsonPayload = String.format(flowdockInboxJSONFormat, mFlowDockName, mAppName, mReviewFormatter.formatReview(c), tags);
                 break;
         }
 
@@ -98,7 +99,8 @@ public class FlowdockNotifier extends Notifier<Comment> implements ResultListene
         return apiURL;
     }
 
-    private String formatComment(Comment c) throws UnsupportedEncodingException {
+    @Override
+    public String formatReview(Comment c) {
         String escapedString = c.text.replace("\"", "\\\"")
                                      .replace("\t", "    ")
                                      .replace("\n", "    ");

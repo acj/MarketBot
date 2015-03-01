@@ -3,6 +3,7 @@ package org.linuxguy.MarketBot.samples;
 import org.linuxguy.MarketBot.Comment;
 import org.linuxguy.MarketBot.GooglePlayWatcher;
 import org.linuxguy.MarketBot.Notifier;
+import org.linuxguy.MarketBot.Utils;
 
 /**
  * Sample client implementation
@@ -34,6 +35,15 @@ public class GooglePlayLogger {
         @Override
         public void onNewResult(Comment result) {
             System.out.println("Response : " + result);
+        }
+
+        @Override
+        public String formatReview(Comment c) {
+            String escapedString = c.text.replace("\"", "\\\"")
+                    .replace("\t", "    ")
+                    .replace("\n", "    ");
+
+            return String.format("\"%s\" \u2014%s %s", escapedString, c.author, Utils.formatRatingWithStars(c.rating));
         }
     }
 

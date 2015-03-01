@@ -5,7 +5,7 @@ import com.squareup.okhttp.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-public class GroupMeNotifier extends Notifier<Comment> implements ResultListener<Comment> {
+public class GroupMeNotifier extends Notifier<Comment> {
     private static final String GROUPME_BOT_API = "https://api.groupme.com/v3/bots/post";
 
     private String mAppName;
@@ -14,6 +14,7 @@ public class GroupMeNotifier extends Notifier<Comment> implements ResultListener
     public GroupMeNotifier(String appName, String accessToken) {
         mAppName = appName;
         mAccessToken = accessToken;
+        mReviewFormatter = this;
     }
 
     @Override
@@ -51,11 +52,11 @@ public class GroupMeNotifier extends Notifier<Comment> implements ResultListener
     }
 
     private String getJsonPayloadForComment(Comment c) throws UnsupportedEncodingException {
-        return String.format("{\"text\" : \"%s\", \"bot_id\" : \"%s\"}", formatComment(c), mAccessToken);
+        return String.format("{\"text\" : \"%s\", \"bot_id\" : \"%s\"}", mReviewFormatter.formatReview(c), mAccessToken);
     }
 
-
-    private String formatComment(Comment c) {
+    @Override
+    public String formatReview(Comment c) {
         String escapedString = c.text.replace("\"", "\\\"")
                                      .replace("\t", "    ")
                                      .replace("\n", "    ");
