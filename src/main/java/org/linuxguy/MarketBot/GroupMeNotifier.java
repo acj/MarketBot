@@ -30,7 +30,7 @@ public class GroupMeNotifier extends Notifier<Comment> implements ResultListener
     }
 
     private static boolean postCommentToGroupMe(String comment) {
-        MediaType urlEncodedMediaType = MediaType.parse("application/x-www-form-urlencoded");
+        MediaType urlEncodedMediaType = MediaType.parse("application/json");
 
         try {
             OkHttpClient client = new OkHttpClient();
