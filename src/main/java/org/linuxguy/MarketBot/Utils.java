@@ -2,12 +2,13 @@ package org.linuxguy.MarketBot;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import javafx.util.Pair;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
+import java.util.List;
 
 public class Utils {
 
@@ -29,7 +30,11 @@ public class Utils {
     }
 
     public static JsonNode fetchJsonFromUrl(String url) {
-        String text = fetchStringFromUrl(url);
+        return fetchJsonFromUrl(url, null);
+    }
+
+    public static JsonNode fetchJsonFromUrl(String url, List<Pair<String, String>> headers) {
+        String text = fetchStringFromUrl(url, headers);
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -42,27 +47,35 @@ public class Utils {
         }
     }
 
-    public static String fetchStringFromUrl(String urlToFetch) {
+    private static String fetchStringFromUrl(String urlToFetch, List<Pair<String, String>> headers) {
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = requestForUrlWithHeaders(urlToFetch, headers);
+
         try {
-            URL url = new URL(urlToFetch);
-            URLConnection connection = null;
-            connection = url.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            Response response = client.newCall(request).execute();
 
-            StringBuilder response = new StringBuilder();
-            String inputLine;
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
+            if (response != null && response.body() != null) {
+                return response.body().string();
             }
-
-            in.close();
-
-            return response.toString();
         } catch (IOException e) {
             e.printStackTrace();
-
-            return "";
         }
+
+        return null;
+    }
+
+    private static Request requestForUrlWithHeaders(String url, List<Pair<String, String>> headers) {
+        Request.Builder request = new Request.Builder();
+
+        request.url(url);
+
+        if (headers != null) {
+            for (Pair<String, String> header : headers) {
+                request.addHeader(header.getKey(), header.getValue());
+            }
+        }
+
+        return request.build();
     }
 }
