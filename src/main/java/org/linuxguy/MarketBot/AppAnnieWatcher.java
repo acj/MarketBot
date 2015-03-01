@@ -136,7 +136,6 @@ public class AppAnnieWatcher extends Watcher<Comment> {
             url += String.format("&page_index=%s", mPageIndex);
         }
 
-        System.out.println("Hitting " + url);
         return url;
     }
 
