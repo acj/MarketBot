@@ -58,12 +58,23 @@ public class GooglePlayWatcher extends Watcher<Comment> implements MarketSession
             if ( mLastPollTime == NONE ) {
                 mLastPollTime = c.getCreationTime();
             } else if (c.getCreationTime() > mLastPollTime) {
-                notifyListeners(Comment.from(c));
+                notifyListeners(commentFromMarketComment(c));
             }
         }
 
         if (response.getCommentsCount() > 0) {
             mLastPollTime = response.getComments(0).getCreationTime();
         }
+    }
+
+    private Comment commentFromMarketComment(Market.Comment marketComment) {
+        Comment c = new Comment();
+
+        c.author    = marketComment.getAuthorName();
+        c.rating    = marketComment.getRating();
+        c.text      = marketComment.getText();
+        c.timestamp = marketComment.getCreationTime();
+
+        return c;
     }
 }

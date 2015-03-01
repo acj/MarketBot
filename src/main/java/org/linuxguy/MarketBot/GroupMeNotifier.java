@@ -62,6 +62,16 @@ public class GroupMeNotifier extends Notifier<Comment> implements ResultListener
     }
 
     private String getJsonPayloadForComment(Comment c) throws UnsupportedEncodingException {
-        return String.format("{\"text\" : \"%s\", \"bot_id\" : \"%s\"}", Utils.formatComment(mAppName, c), mAccessToken);
+        return String.format("{\"text\" : \"%s\", \"bot_id\" : \"%s\"}", formatComment(c), mAccessToken);
+    }
+
+
+    private String formatComment(Comment c) {
+        String escapedString = c.text.replace("\"", "\\\"")
+                                     .replace("\t", "    ")
+                                     .replace("\n", "    ");
+
+        return String.format("%s: \\\"%s\\\"  %s \u2014%s",
+                mAppName, escapedString, Utils.formatRatingWithStars(c.rating), c.author);
     }
 }
