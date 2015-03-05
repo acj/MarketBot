@@ -47,6 +47,10 @@ public class Utils {
         }
     }
 
+    public static boolean isNonEmptyString(String str) {
+        return str != null && str.length() > 0;
+    }
+
     private static String fetchStringFromUrl(String urlToFetch, List<Pair<String, String>> headers) {
         OkHttpClient client = new OkHttpClient();
 

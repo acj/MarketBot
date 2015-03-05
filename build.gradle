@@ -17,9 +17,8 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.2.0'
     compile 'com.fasterxml.jackson.core:jackson-core:2.5.1'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.5.1'
-    compile 'com.google.protobuf:protobuf-java:2.2.0'
 
-    compile name: 'androidmarketapi-0.6'
+    compile name: 'googleplaycrawler-0.3'
 }
 
 jar {

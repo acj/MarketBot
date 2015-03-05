@@ -1,40 +1,58 @@
 package org.linuxguy.MarketBot;
 
-import com.gc.android.market.api.MarketSession;
-import com.gc.android.market.api.model.Market;
+import com.akdeniz.googleplaycrawler.GooglePlay;
+import com.akdeniz.googleplaycrawler.GooglePlayAPI;
 
 import java.util.concurrent.TimeUnit;
 
-public class GooglePlayWatcher extends Watcher<Review> implements MarketSession.Callback<Market.CommentsResponse> {
+public class GooglePlayWatcher extends Watcher<Review> {
     private static final long POLL_INTERVAL_MS = TimeUnit.MINUTES.toMillis(5);
     private static final int  NONE             = -1;
+    private static final String ANDROID_ID     = "dead000beef";
 
-    private String mUsername;
-    private String mPassword;
-    private String mAppId;
+    private GooglePlayAPI mGooglePlayAPI;
+    private String        mUsername;
+    private String        mPassword;
+    private String        mAppId;
 
     public GooglePlayWatcher(String username, String password, String appId) {
         mUsername = username;
         mPassword = password;
         mAppId = appId;
+        mLastPollTime = NONE;
     }
 
     @Override
     public void run() {
-        MarketSession session = new MarketSession();
-        session.login(mUsername, mPassword);
+        mGooglePlayAPI = new GooglePlayAPI(mUsername, mPassword, ANDROID_ID);
+        mGooglePlayAPI.setLocalization("en-EN");
+        try {
+            mGooglePlayAPI.login();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return;
+        }
 
         while (true) {
             try {
-                Market.CommentsRequest commentsRequest = Market.CommentsRequest.newBuilder()
-                    .setAppId(mAppId)
-                    .setStartIndex(0)
-                    .setEntriesCount(5)
-                    .build();
+                GooglePlay.ReviewResponse reviews = mGooglePlayAPI.reviews(mAppId, GooglePlayAPI.REVIEW_SORT.NEWEST, 0, 5);
+                GooglePlay.GetReviewsResponse response = reviews.getGetResponse();
+                if (response.getReviewCount() == 0) {
+                    System.out.println("No comments in Google Play response");
+                }
 
-                session.append(commentsRequest, this);
+                for (GooglePlay.Review r : response.getReviewList()) {
+                    if (mLastPollTime == NONE) {
+                        mLastPollTime = r.getTimestampMsec();
+                    } else if (r.getTimestampMsec() > mLastPollTime) {
+                        notifyListeners(reviewFromMarketReview(r));
+                    }
 
-                session.flush();
+                    if (response.getReviewCount() > 0) {
+                        mLastPollTime = response.getReview(0).getTimestampMsec();
+                    }
+                }
 
                 try {
                     Thread.sleep(POLL_INTERVAL_MS);
@@ -47,34 +65,17 @@ public class GooglePlayWatcher extends Watcher<Review> implements MarketSession.
         }
     }
 
-    @Override
-    public void onResult(Market.ResponseContext responseContext, Market.CommentsResponse response) {
-        if (response == null || response.getCommentsCount() == 0) {
-            System.out.println("No comments in result");
-            return;
-        }
+    private Review reviewFromMarketReview(GooglePlay.Review review) {
+        Review r = new Review();
 
-        for (Market.Comment c : response.getCommentsList()) {
-            if ( mLastPollTime == NONE ) {
-                mLastPollTime = c.getCreationTime();
-            } else if (c.getCreationTime() > mLastPollTime) {
-                notifyListeners(commentFromMarketComment(c));
-            }
-        }
+        r.author     = review.getAuthorName();
+        r.rating     = review.getStarRating();
+        r.title      = review.getTitle();
+        r.text       = review.getComment();
+        r.timestamp  = review.getTimestampMsec();
+        r.version    = review.getDocumentVersion();
+        r.deviceName = review.getDeviceName();
 
-        if (response.getCommentsCount() > 0) {
-            mLastPollTime = response.getComments(0).getCreationTime();
-        }
-    }
-
-    private Comment commentFromMarketComment(Market.Comment marketComment) {
-        Review c = new Review();
-
-        c.author    = marketComment.getAuthorName();
-        c.rating    = marketComment.getRating();
-        c.text      = marketComment.getText();
-        c.timestamp = marketComment.getCreationTime();
-
-        return c;
+        return r;
     }
 }
