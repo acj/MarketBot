@@ -1,6 +1,6 @@
 package org.linuxguy.MarketBot.samples;
 
-import org.linuxguy.MarketBot.Comment;
+import org.linuxguy.MarketBot.Review;
 import org.linuxguy.MarketBot.GooglePlayWatcher;
 import org.linuxguy.MarketBot.Notifier;
 import org.linuxguy.MarketBot.Utils;
@@ -30,15 +30,15 @@ public class GooglePlayLogger {
         playWatcher.join();
     }
 
-    private static class ConsoleNotifier extends Notifier<Comment> {
+    private static class ConsoleNotifier extends Notifier<Review> {
 
         @Override
-        public void onNewResult(Comment result) {
+        public void onNewResult(Review result) {
             System.out.println("Response : " + result);
         }
 
         @Override
-        public String formatReview(Comment c) {
+        public String formatReview(Review c) {
             String escapedString = c.text.replace("\"", "\\\"")
                     .replace("\t", "    ")
                     .replace("\n", "    ");

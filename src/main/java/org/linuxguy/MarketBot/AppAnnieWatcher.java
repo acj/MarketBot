@@ -11,13 +11,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class AppAnnieWatcher extends Watcher<Comment> {
+public class AppAnnieWatcher extends Watcher<Review> {
 
     private static final String APP_ANNIE_BASE_URL = "https://api.appannie.com/v1.2";
     private static final long   POLL_INTERVAL_MS   = TimeUnit.MINUTES.toMillis(5);
 
     private String          mApiKey;
-    private Comment         mMostRecentComment;
+    private Review          mMostRecentComment;
     private AppAnnieMarket  mMarket;
     private String          mProductId;
     private String          mStartDate;
@@ -85,19 +85,20 @@ public class AppAnnieWatcher extends Watcher<Comment> {
         headers.add(authHeader);
 
         while (true) {
-            List<Comment> comments = getCommentsFromJson(Utils.fetchJsonFromUrl(getAppAnnieURL(), headers));
+            List<Review> comments = getCommentsFromJson(Utils.fetchJsonFromUrl(getAppAnnieURL(), headers));
 
             if (comments.size() > 0) {
                 if (mMostRecentComment == null) {
-                    for (Comment c : comments) {
+                    for (Review c : comments) {
                         if (mMostRecentComment == null || c.timestamp > mMostRecentComment.timestamp) {
                             mMostRecentComment = c;
                         }
                     }
+                    notifyListeners(mMostRecentComment);
                 } else {
-                    Comment newMostRecentComment = mMostRecentComment;
+                    Review newMostRecentComment = mMostRecentComment;
 
-                    for (Comment c : comments) {
+                    for (Review c : comments) {
                         if (c.timestamp > newMostRecentComment.timestamp) {
                             notifyListeners(c);
                             newMostRecentComment = c;
@@ -139,8 +140,8 @@ public class AppAnnieWatcher extends Watcher<Comment> {
         return url;
     }
 
-    private List<Comment> getCommentsFromJson(JsonNode json) {
-        ArrayList<Comment> comments = new ArrayList<Comment>();
+    private List<Review> getCommentsFromJson(JsonNode json) {
+        ArrayList<Review> comments = new ArrayList<Review>();
 
         JsonNode entryNode = json.path("reviews");
 
@@ -148,7 +149,7 @@ public class AppAnnieWatcher extends Watcher<Comment> {
         while (childNodes.hasNext()) {
             JsonNode n = childNodes.next();
 
-            final Comment c = getCommentFromJsonNode(n);
+            final Review c = getCommentFromJsonNode(n);
             if (c != null) {
                 comments.add(c);
             }
@@ -157,8 +158,8 @@ public class AppAnnieWatcher extends Watcher<Comment> {
         return comments;
     }
 
-    private Comment getCommentFromJsonNode(JsonNode node) {
-        Comment c = new Comment();
+    private Review getCommentFromJsonNode(JsonNode node) {
+        Review c = new Review();
         c.rating = node.get("rating").asInt();
         c.author = node.get("reviewer").textValue();
         c.text = String.format("%s. %s", node.get("title").textValue(), node.get("text").textValue());

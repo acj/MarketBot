@@ -1,6 +1,6 @@
 package org.linuxguy.MarketBot;
 
-public class Comment {
+public class Review {
     public String author;
     public int    rating;
     public String text;
@@ -10,8 +10,8 @@ public class Comment {
 
     @Override
     public boolean equals(Object that) {
-        if (that instanceof Comment) {
-            Comment thatComment = (Comment)that;
+        if (that instanceof Review) {
+            Review thatComment = (Review)that;
 
             return safeStringEquals(this.author, thatComment.author) &&
                     this.rating == thatComment.rating &&

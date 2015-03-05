@@ -5,7 +5,7 @@ import com.squareup.okhttp.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-public class FlowdockNotifier extends Notifier<Comment> {
+public class FlowdockNotifier extends Notifier<Review> {
     private static final String FLOWDOCK_CHAT_API = "https://api.flowdock.com/v1/messages/chat/";
     private static final String FLOWDOCK_INBOX_API = "https://api.flowdock.com/v1/messages/team_inbox/";
 
@@ -28,7 +28,7 @@ public class FlowdockNotifier extends Notifier<Comment> {
     }
 
     @Override
-    public void onNewResult(Comment result) {
+    public void onNewResult(Review result) {
         try {
             String toPost = getJsonPayloadForComment(result);
 
@@ -63,7 +63,7 @@ public class FlowdockNotifier extends Notifier<Comment> {
         }
     }
 
-    private String getJsonPayloadForComment(Comment c) throws UnsupportedEncodingException {
+    private String getJsonPayloadForComment(Review c) throws UnsupportedEncodingException {
         final String tags = "[#review]";
         final String flowdockChatJSONFormat =
             "{\"content\" : \"%s\", \"external_user_name\" : \"%s\", \"tags\" : \"%s\" }";
@@ -100,7 +100,7 @@ public class FlowdockNotifier extends Notifier<Comment> {
     }
 
     @Override
-    public String formatReview(Comment c) {
+    public String formatReview(Review c) {
         String escapedString = c.text.replace("\"", "\\\"")
                                      .replace("\t", "    ")
                                      .replace("\n", "    ");

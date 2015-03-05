@@ -5,7 +5,7 @@ import com.gc.android.market.api.model.Market;
 
 import java.util.concurrent.TimeUnit;
 
-public class GooglePlayWatcher extends Watcher<Comment> implements MarketSession.Callback<Market.CommentsResponse> {
+public class GooglePlayWatcher extends Watcher<Review> implements MarketSession.Callback<Market.CommentsResponse> {
     private static final long POLL_INTERVAL_MS = TimeUnit.MINUTES.toMillis(5);
     private static final int  NONE             = -1;
 
@@ -68,7 +68,7 @@ public class GooglePlayWatcher extends Watcher<Comment> implements MarketSession
     }
 
     private Comment commentFromMarketComment(Market.Comment marketComment) {
-        Comment c = new Comment();
+        Review c = new Review();
 
         c.author    = marketComment.getAuthorName();
         c.rating    = marketComment.getRating();

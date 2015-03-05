@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class AppStoreRSSWatcher extends Watcher<Comment> {
+public class AppStoreRSSWatcher extends Watcher<Review> {
     private static final String APP_STORE_URL    = "https://itunes.apple.com/%s/rss/customerreviews/id=%s/sortBy=mostRecent/json";
     private static final long   POLL_INTERVAL_MS = TimeUnit.MINUTES.toMillis(5);
     private static final int    NONE             = -1;
@@ -25,11 +25,11 @@ public class AppStoreRSSWatcher extends Watcher<Comment> {
     @Override
     public void run() {
         while (true) {
-            List<Comment> comments = getCommentsFromJson(Utils.fetchJsonFromUrl(getAppStoreUrl(mCountryCode, mAppId)));
+            List<Review> comments = getCommentsFromJson(Utils.fetchJsonFromUrl(getAppStoreUrl(mCountryCode, mAppId)));
 
             if (comments.size() > 0) {
                 if (mMostRecentId == NONE) {
-                    for (Comment c : comments) {
+                    for (Review c : comments) {
                         if (c.timestamp > mMostRecentId) {
                             mMostRecentId = c.timestamp;
                         }
@@ -38,7 +38,7 @@ public class AppStoreRSSWatcher extends Watcher<Comment> {
                     boolean didNotify = false;
                     long newMostRecentId = NONE;
 
-                    for (Comment c : comments) {
+                    for (Review c : comments) {
                         if (c.timestamp > mMostRecentId) {
                             notifyListeners(c);
 
@@ -65,8 +65,8 @@ public class AppStoreRSSWatcher extends Watcher<Comment> {
         }
     }
 
-    private static List<Comment> getCommentsFromJson(JsonNode json) {
-        ArrayList<Comment> comments = new ArrayList<Comment>();
+    private static List<Review> getCommentsFromJson(JsonNode json) {
+        ArrayList<Review> comments = new ArrayList<Review>();
 
         JsonNode entryNode = json.path("feed").path("entry");
 
@@ -76,7 +76,7 @@ public class AppStoreRSSWatcher extends Watcher<Comment> {
             if (n.has("author")) {
                 JsonNode authorNode = n.get("author");
 
-                final Comment comment = new Comment();
+                final Review comment = new Review();
 
                 final String title = n.get("title").get("label").textValue();
                 final String text = n.get("content").get("label").textValue();
