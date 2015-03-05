@@ -94,7 +94,6 @@ public class AppAnnieWatcher extends Watcher<Review> {
                             mMostRecentComment = c;
                         }
                     }
-                    notifyListeners(mMostRecentComment);
                 } else {
                     Review newMostRecentComment = mMostRecentComment;
 
