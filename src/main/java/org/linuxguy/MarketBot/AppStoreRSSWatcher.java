@@ -16,10 +16,11 @@ public class AppStoreRSSWatcher extends Watcher<Review> {
     private String mAppId;
     private long   mMostRecentId;
 
-    public AppStoreRSSWatcher(String countryCode, String appId) {
+    public AppStoreRSSWatcher(String countryCode, String appId, String appName) {
         mCountryCode  = countryCode;
         mAppId        = appId;
         mMostRecentId = NONE;
+        mAppName      = appName;
     }
 
     @Override
@@ -65,7 +66,7 @@ public class AppStoreRSSWatcher extends Watcher<Review> {
         }
     }
 
-    private static List<Review> getCommentsFromJson(JsonNode json) {
+    private List<Review> getCommentsFromJson(JsonNode json) {
         ArrayList<Review> comments = new ArrayList<Review>();
 
         JsonNode entryNode = json.path("feed").path("entry");
@@ -76,17 +77,18 @@ public class AppStoreRSSWatcher extends Watcher<Review> {
             if (n.has("author")) {
                 JsonNode authorNode = n.get("author");
 
-                final Review comment = new Review();
+                final Review review = new Review();
 
                 final String title = n.get("title").get("label").textValue();
                 final String text = n.get("content").get("label").textValue();
 
-                comment.author = authorNode.get("name").get("label").textValue();
-                comment.text = String.format("%s. %s", title, text);
-                comment.rating = n.get("im:rating").get("label").asInt();
-                comment.timestamp = n.get("id").get("label").asLong();
+                review.productName = mAppName;
+                review.author = authorNode.get("name").get("label").textValue();
+                review.text = String.format("%s. %s", title, text);
+                review.rating = n.get("im:rating").get("label").asInt();
+                review.timestamp = n.get("id").get("label").asLong();
 
-                comments.add(comment);
+                comments.add(review);
             }
         }
 

@@ -22,7 +22,7 @@ public class GooglePlayLogger {
         String password = args[1];
         String app_id   = args[2];
 
-        GooglePlayWatcher playWatcher = new GooglePlayWatcher(username, password, app_id);
+        GooglePlayWatcher playWatcher = new GooglePlayWatcher(username, password, app_id, "My Android App");
 
         playWatcher.addListener(new ConsoleNotifier());
 

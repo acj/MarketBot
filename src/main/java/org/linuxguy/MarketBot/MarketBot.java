@@ -7,13 +7,12 @@ public class MarketBot {
         String username = "marketbotuser@gmail.com";
         String password = "foo";
  
-        String groupmeId = "XYZPDQ";
+        String groupMeBotId = "XYZPDQ";
         String flowdockInboxId = "123456789";
  
         final String androidPackage = "com.mycompany.MyApp";
-        GooglePlayWatcher playWatcher = new GooglePlayWatcher(username, password, androidPackage);
-        FlowdockNotifier flowdockNotifier = new FlowdockNotifier("My Android App", 
-                                                                 "MarketBot",
+        GooglePlayWatcher playWatcher = new GooglePlayWatcher(username, password, androidPackage, "My Android App");
+        FlowdockNotifier flowdockNotifier = new FlowdockNotifier("MarketBot",
                                                                  flowdockInboxId, 
                                                                  FlowdockNotificationType.INBOX);
         playWatcher.addListener(flowdockNotifier);
@@ -21,8 +20,8 @@ public class MarketBot {
  
         // You can find this app ID in iTunes Connect
         String iOSAppId = "123456789";
-        AppStoreRSSWatcher appStoreWatcherUS = new AppStoreRSSWatcher("us", iOSAppId);
-        appStoreWatcherUS.addListener(new GroupMeNotifier("My iOS App", groupmeId));
+        AppStoreRSSWatcher appStoreWatcherUS = new AppStoreRSSWatcher("us", iOSAppId, "My iOS App");
+        appStoreWatcherUS.addListener(new GroupMeNotifier(groupMeBotId));
         appStoreWatcherUS.start();
 
         System.out.println("All pollers started");

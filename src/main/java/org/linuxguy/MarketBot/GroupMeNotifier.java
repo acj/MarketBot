@@ -11,8 +11,7 @@ public class GroupMeNotifier extends Notifier<Review> {
     private String mAppName;
     private String mAccessToken;
 
-    public GroupMeNotifier(String appName, String accessToken) {
-        mAppName = appName;
+    public GroupMeNotifier(String accessToken) {
         mAccessToken = accessToken;
         mReviewFormatter = this;
     }
@@ -62,6 +61,6 @@ public class GroupMeNotifier extends Notifier<Review> {
                                      .replace("\n", "    ");
 
         return String.format("\\\"%s\\\" \u2014%s %s\\n\\n%s v%s (%s storefront)",
-                escapedString, c.author, Utils.formatRatingWithStars(c.rating), mAppName, c.version, c.countryCode);
+                escapedString, c.author, Utils.formatRatingWithStars(c.rating), c.productName, c.version, c.countryCode);
     }
 }

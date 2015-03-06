@@ -46,10 +46,11 @@ public class AppAnnieWatcher extends Watcher<Review> {
         }
     }
 
-    AppAnnieWatcher(String apiKey, AppAnnieMarket market, String appProductId) {
+    AppAnnieWatcher(String apiKey, AppAnnieMarket market, String appProductId, String appName) {
         mApiKey = apiKey;
         mMarket = market;
         mProductId = appProductId;
+        mAppName = appName;
     }
 
     public void setMarket(AppAnnieMarket market) {
@@ -158,27 +159,28 @@ public class AppAnnieWatcher extends Watcher<Review> {
     }
 
     private Review getCommentFromJsonNode(JsonNode node) {
-        Review c = new Review();
-        c.rating = node.get("rating").asInt();
-        c.author = node.get("reviewer").textValue();
-        c.text = String.format("%s. %s", node.get("title").textValue(), node.get("text").textValue());
+        Review review = new Review();
+        review.productName = mAppName;
+        review.rating = node.get("rating").asInt();
+        review.author = node.get("reviewer").textValue();
+        review.text = String.format("%s. %s", node.get("title").textValue(), node.get("text").textValue());
 
         JsonNode versionNode = node.get("version");
         JsonNode countryNode = node.get("country");
 
-        c.version = versionNode != null ? versionNode.textValue() : "";
-        c.countryCode = countryNode != null ? countryNode.textValue() : "";
+        review.version = versionNode != null ? versionNode.textValue() : "";
+        review.countryCode = countryNode != null ? countryNode.textValue() : "";
 
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             Date date = format.parse(node.get("date").textValue());
-            c.timestamp = date.getTime();
+            review.timestamp = date.getTime();
         } catch (ParseException e) {
             e.printStackTrace();
 
-            c.timestamp = -1;
+            review.timestamp = -1;
         }
 
-        return (c.timestamp > 0) ? c : null;
+        return (review.timestamp > 0) ? review : null;
     }
 }

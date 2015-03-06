@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Watcher<T> extends Thread {
-
+    protected String             mAppName;
     protected long               mLastPollTime;
 
     private List<ResultListener> mListeners;

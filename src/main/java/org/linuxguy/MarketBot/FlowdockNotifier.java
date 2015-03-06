@@ -14,13 +14,11 @@ public class FlowdockNotifier extends Notifier<Review> {
         INBOX
     }
 
-    private String mAppName;
     private String mFlowDockName;
     private String mAPIToken;
     private FlowdockNotificationType mNotificationType;
 
-    public FlowdockNotifier(String appName, String flowDockName, String apiToken, FlowdockNotificationType notificationType) {
-        mAppName = appName;
+    public FlowdockNotifier(String flowDockName, String apiToken, FlowdockNotificationType notificationType) {
         mFlowDockName = flowDockName;
         mAPIToken = apiToken;
         mNotificationType = notificationType;
@@ -63,7 +61,7 @@ public class FlowdockNotifier extends Notifier<Review> {
         }
     }
 
-    private String getJsonPayloadForComment(Review c) throws UnsupportedEncodingException {
+    private String getJsonPayloadForComment(Review r) throws UnsupportedEncodingException {
         final String tags = "[#review]";
         final String flowdockChatJSONFormat =
             "{\"content\" : \"%s\", \"external_user_name\" : \"%s\", \"tags\" : \"%s\" }";
@@ -73,10 +71,10 @@ public class FlowdockNotifier extends Notifier<Review> {
         String jsonPayload = null;
         switch (mNotificationType) {
             case CHAT:
-                jsonPayload = String.format(flowdockChatJSONFormat, mReviewFormatter.formatReview(c), mFlowDockName, tags);
+                jsonPayload = String.format(flowdockChatJSONFormat, mReviewFormatter.formatReview(r), mFlowDockName, tags);
                 break;
             case INBOX:
-                jsonPayload = String.format(flowdockInboxJSONFormat, mFlowDockName, mAppName, mReviewFormatter.formatReview(c), tags);
+                jsonPayload = String.format(flowdockInboxJSONFormat, mFlowDockName, r.productName, mReviewFormatter.formatReview(r), tags);
                 break;
         }
 

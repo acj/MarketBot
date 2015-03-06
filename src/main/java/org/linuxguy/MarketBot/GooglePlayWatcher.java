@@ -15,10 +15,11 @@ public class GooglePlayWatcher extends Watcher<Review> {
     private String        mPassword;
     private String        mAppId;
 
-    public GooglePlayWatcher(String username, String password, String appId) {
+    public GooglePlayWatcher(String username, String password, String appId, String appName) {
         mUsername = username;
         mPassword = password;
         mAppId = appId;
+        mAppName = appName;
         mLastPollTime = NONE;
     }
 
@@ -68,13 +69,14 @@ public class GooglePlayWatcher extends Watcher<Review> {
     private Review reviewFromMarketReview(GooglePlay.Review review) {
         Review r = new Review();
 
-        r.author     = review.getAuthorName();
-        r.rating     = review.getStarRating();
-        r.title      = review.getTitle();
-        r.text       = review.getComment();
-        r.timestamp  = review.getTimestampMsec();
-        r.version    = review.getDocumentVersion();
-        r.deviceName = review.getDeviceName();
+        r.productName = mAppName;
+        r.author      = review.getAuthorName();
+        r.rating      = review.getStarRating();
+        r.title       = review.getTitle();
+        r.text        = review.getComment();
+        r.timestamp   = review.getTimestampMsec();
+        r.version     = review.getDocumentVersion();
+        r.deviceName  = review.getDeviceName();
 
         return r;
     }
