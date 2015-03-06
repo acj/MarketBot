@@ -12,8 +12,9 @@ If you are using MarketBot to track an app in Google Play, the username and pass
 
 ### Inputs
 
- * Google Play
- * App Store
+ * App Annie: iOS, Android, Windows, Mac, Amazon, iBooks, ...
+ * Google Play: Android (RSS)
+ * App Store: iOS, Mac (RSS)
  
 ### Outputs
 
@@ -25,6 +26,10 @@ If you are using MarketBot to track an app in Google Play, the username and pass
 ### Contributing
 
 The inputs and outputs for MarketBot are extensible and easy to use. If you develop a new one, please send me a pull request.
+
+To add a new input, implement a `Watcher` subclass.
+
+To add a new output, implement a `Notifier` subclass.
 
 ### Acknowledgements
 
