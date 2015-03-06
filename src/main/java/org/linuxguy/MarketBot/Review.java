@@ -1,6 +1,7 @@
 package org.linuxguy.MarketBot;
 
 public class Review {
+    public String productName;
     public String author;
     public int    rating;
     public String title;
@@ -15,7 +16,8 @@ public class Review {
         if (that instanceof Review) {
             Review thatReview = (Review)that;
 
-            return safeStringEquals(this.author, thatReview.author) &&
+            return safeStringEquals(this.productName, thatReview.productName) &&
+                    safeStringEquals(this.author, thatReview.author) &&
                     this.rating == thatReview.rating &&
                     safeStringEquals(this.title, thatReview.title) &&
                     safeStringEquals(this.text, thatReview.text) &&
