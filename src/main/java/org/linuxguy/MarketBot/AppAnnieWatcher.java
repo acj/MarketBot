@@ -1,7 +1,6 @@
 package org.linuxguy.MarketBot;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import javafx.util.Pair;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -80,9 +79,9 @@ public class AppAnnieWatcher extends Watcher<Review> {
 
     @Override
     public void run() {
-        final ArrayList<Pair<String, String>> headers = new ArrayList();
+        final ArrayList<Utils.Header> headers = new ArrayList();
         final String bearerToken = String.format("Bearer %s", mApiKey);
-        final Pair<String, String> authHeader = new Pair<String, String>("Authorization", bearerToken);
+        final Utils.Header authHeader = new Utils.Header("Authorization", bearerToken);
         headers.add(authHeader);
 
         while (true) {

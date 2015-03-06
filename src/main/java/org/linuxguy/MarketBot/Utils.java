@@ -5,12 +5,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.List;
 
 public class Utils {
+
+    public static class Header {
+        public Header(String key, String value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        String key;
+        String value;
+    }
 
     public static String formatRatingWithStars(int rating) {
         switch (rating) {
@@ -33,7 +42,7 @@ public class Utils {
         return fetchJsonFromUrl(url, null);
     }
 
-    public static JsonNode fetchJsonFromUrl(String url, List<Pair<String, String>> headers) {
+    public static JsonNode fetchJsonFromUrl(String url, List<Header> headers) {
         String text = fetchStringFromUrl(url, headers);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -51,7 +60,7 @@ public class Utils {
         return str != null && str.length() > 0;
     }
 
-    private static String fetchStringFromUrl(String urlToFetch, List<Pair<String, String>> headers) {
+    private static String fetchStringFromUrl(String urlToFetch, List<Header> headers) {
         OkHttpClient client = new OkHttpClient();
 
         Request request = requestForUrlWithHeaders(urlToFetch, headers);
@@ -69,14 +78,14 @@ public class Utils {
         return null;
     }
 
-    private static Request requestForUrlWithHeaders(String url, List<Pair<String, String>> headers) {
+    private static Request requestForUrlWithHeaders(String url, List<Header> headers) {
         Request.Builder request = new Request.Builder();
 
         request.url(url);
 
         if (headers != null) {
-            for (Pair<String, String> header : headers) {
-                request.addHeader(header.getKey(), header.getValue());
+            for (Header header : headers) {
+                request.addHeader(header.key, header.value);
             }
         }
 
