@@ -11,7 +11,8 @@ public class MarketBot {
  
         String groupMeBotId = "XYZPDQ";
         String flowdockInboxId = "123456789";
- 
+        String slackAPIKey = "abcd-2983487383-2834587102-9827393922-8c10d48zb3";
+
         String botName = "MarketBot";
 
         final String androidPackage = "com.mycompany.MyApp";
@@ -19,7 +20,10 @@ public class MarketBot {
         FlowdockNotifier flowdockNotifier = new FlowdockNotifier(botName,
                                                                  flowdockInboxId, 
                                                                  FlowdockNotificationType.INBOX);
+        SlackNotifier slackNotifier = new SlackNotifier(slackAPIKey, botName, "#appreviews");
+
         playWatcher.addListener(flowdockNotifier);
+        playWatcher.addListener(slackNotifier);
         playWatcher.start();
  
         // You can find this app ID in iTunes Connect
