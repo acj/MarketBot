@@ -4,8 +4,8 @@ import org.linuxguy.MarketBot.FlowdockNotifier.FlowdockNotificationType;
 
 public class MarketBot { 
     public static void main(String[] args) throws InterruptedException {
-        String username = "marketbotuser@gmail.com";
-        String password = "foo";
+        String googlePlayUsername = "marketbotuser@gmail.com";
+        String googlePlayPassword = "foo";
  
         String groupMeBotId = "XYZPDQ";
         String flowdockInboxId = "123456789";
@@ -13,7 +13,7 @@ public class MarketBot {
         String botName = "MarketBot";
 
         final String androidPackage = "com.mycompany.MyApp";
-        GooglePlayWatcher playWatcher = new GooglePlayWatcher(username, password, androidPackage, "My Android App");
+        GooglePlayWatcher playWatcher = new GooglePlayWatcher(googlePlayUsername, googlePlayPassword, androidPackage, "My Android App");
         FlowdockNotifier flowdockNotifier = new FlowdockNotifier(botName,
                                                                  flowdockInboxId, 
                                                                  FlowdockNotificationType.INBOX);
