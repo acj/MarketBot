@@ -18,6 +18,7 @@ If you are using MarketBot to track an app in Google Play, the username and pass
  
 ### Outputs
 
+ * [Slack](https://slack.com)
  * [Flowdock](https://flowdock.com)
  * [GroupMe](https://groupme.com)
  * Console/Terminal
