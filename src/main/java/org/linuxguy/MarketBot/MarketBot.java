@@ -10,9 +10,11 @@ public class MarketBot {
         String groupMeBotId = "XYZPDQ";
         String flowdockInboxId = "123456789";
  
+        String botName = "MarketBot";
+
         final String androidPackage = "com.mycompany.MyApp";
         GooglePlayWatcher playWatcher = new GooglePlayWatcher(username, password, androidPackage, "My Android App");
-        FlowdockNotifier flowdockNotifier = new FlowdockNotifier("MarketBot",
+        FlowdockNotifier flowdockNotifier = new FlowdockNotifier(botName,
                                                                  flowdockInboxId, 
                                                                  FlowdockNotificationType.INBOX);
         playWatcher.addListener(flowdockNotifier);
