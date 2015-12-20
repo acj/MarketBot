@@ -98,10 +98,15 @@ public class FlowdockNotifier extends Notifier<Review> {
     }
 
     @Override
-    public String formatReview(Review c) {
-        String escapedString = c.text.replace("\"", "\\\"")
-                                     .replace("\t", "    ")
-                                     .replace("\n", "    ");
-        return String.format("\\\"%s\\\"  %s \u2014%s", escapedString, Utils.formatRatingWithStars(c.rating), c.author);
+    public String formatReview(Review r) {
+        String escapedString = r.text.replace("\"", "\\\"")
+                .replace("\t", "    ")
+                .replace("\n", "    ");
+
+        String version = Utils.isNonEmptyString(r.version) ? r.version : "Unknown version";
+        String deviceName = Utils.isNonEmptyString(r.deviceName) ? r.deviceName : "Unknown device";
+
+        return String.format("\\\"%s\\\" \u2014%s %s\\n\\n%s. %s. %s.",
+                escapedString, r.author, Utils.formatRatingWithStars(r.rating), r.productName, version, deviceName);
     }
 }
