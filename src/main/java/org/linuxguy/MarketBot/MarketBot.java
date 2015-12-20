@@ -4,6 +4,8 @@ import org.linuxguy.MarketBot.FlowdockNotifier.FlowdockNotificationType;
 
 public class MarketBot { 
     public static void main(String[] args) throws InterruptedException {
+        // This can be any valid Google account. For security reasons, I do NOT recommend using the same account
+        // that you use to manage your app.
         String googlePlayUsername = "marketbotuser@gmail.com";
         String googlePlayPassword = "foo";
  
